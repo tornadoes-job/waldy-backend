@@ -78,6 +78,7 @@ export class ProductController {
       const products = await ProductService.findBySupplierCode(supplierCode);
       res.json({ success: true, data: products });
     } catch (error) {
+      console.error('Error in getBySupplierCode:', error);
       res.status(500).json({ success: false, error: 'Internal server error' });
     }
   }

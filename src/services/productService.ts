@@ -222,10 +222,10 @@ export class ProductService {
       LEFT JOIN sectors s ON p.sector_id = s.id
       LEFT JOIN product_categories cat ON p.category_id = cat.id
       LEFT JOIN suppliers sup ON p.supplier_id = sup.id
-      WHERE sup.code ILIKE $1 AND p.is_active = true
+      WHERE sup.code = $1 AND p.is_active = true
       ORDER BY p.wal_reference ASC
       LIMIT 100`,
-      [`${supplierCode}%`]
+      [supplierCode]
     );
     return rows.map(r => this.mapRowToProduct(r));
   }
