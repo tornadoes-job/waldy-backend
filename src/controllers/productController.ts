@@ -70,8 +70,8 @@ export class ProductController {
 
   static async getBySupplierCode(req: Request, res: Response): Promise<void> {
     try {
-      const { supplierCode } = req.params;
-      if (!supplierCode) {
+      const { supplierCode } = req.query;
+      if (!supplierCode || typeof supplierCode !== 'string') {
         res.status(400).json({ success: false, error: 'Supplier code is required' });
         return;
       }

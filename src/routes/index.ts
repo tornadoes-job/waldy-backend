@@ -30,7 +30,7 @@ router.delete('/suppliers/:id', SupplierController.delete);
 router.get('/products', ProductController.getAll);
 router.get('/products/search-by-code', ProductController.searchByWalCode); // ?code=W/AGR/MIL
 router.get('/products/by-category/:categoryId', ProductController.getByCategory); // /W/AGR/MIL
-router.get('/products/by-supplier/:supplierCode', ProductController.getBySupplierCode); // /W/FRN-0001
+router.get('/products/by-supplier', ProductController.getBySupplierCode); // ?supplierCode=W/FRN-0001
 router.get('/products/:id', ProductController.getById);
 router.post('/products', upload.single('image'), ProductController.create);
 router.put('/products/:id', upload.single('image'), ProductController.update);
