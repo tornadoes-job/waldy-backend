@@ -85,27 +85,31 @@ export class ProductController {
 
   static async create(req: Request, res: Response): Promise<void> {
     try {
+      console.log('[CREATE] Body fields:', Object.keys(req.body));
+      console.log('[CREATE] File:', !!req.file);
       const dto: CreateProductDTO = {
-        sector_id: req.body.sector_id,
-        category_id: req.body.category_id,
-        supplier_id: req.body.supplier_id,
-        name: req.body.name,
-        variant: req.body.variant,
-        description: req.body.description,
-        unit: req.body.unit,
-        barcode: req.body.barcode,
-        quantity_in_stock: parseFloat(req.body.quantity_in_stock) || 0,
-        min_stock_alert: parseFloat(req.body.min_stock_alert) || 0,
-        purchase_price: req.body.purchase_price ? parseFloat(req.body.purchase_price) : undefined,
-        selling_price: req.body.selling_price ? parseFloat(req.body.selling_price) : undefined,
+        sector_id: req.body.sector_id || '',
+        category_id: req.body.category_id || '',
+        supplier_id: req.body.supplier_id || '',
+        name: req.body.name || '',
+        variant: req.body.variant || '',
+        description: req.body.description || '',
+        unit: req.body.unit || 'kg',
+        barcode: req.body.barcode || '',
+        quantity_in_stock: Number(req.body.quantity_in_stock) || 0,
+        min_stock_alert: Number(req.body.min_stock_alert) || 0,
+        purchase_price: req.body.purchase_price ? Number(req.body.purchase_price) : undefined,
+        selling_price: req.body.selling_price ? Number(req.body.selling_price) : undefined,
         currency: req.body.currency || 'XOF',
-        origin_country: req.body.origin_country,
-        origin_region: req.body.origin_region,
-        batch_number: req.body.batch_number,
-        expiry_date: req.body.expiry_date,
-        manufacture_date: req.body.manufacture_date,
-        notes: req.body.notes,
+        origin_country: req.body.origin_country || '',
+        origin_region: req.body.origin_region || '',
+        batch_number: req.body.batch_number || '',
+        expiry_date: req.body.expiry_date || '',
+        manufacture_date: req.body.manufacture_date || '',
+        notes: req.body.notes || '',
       };
+
+      console.log('[CREATE] DTO quantity:', dto.quantity_in_stock);
 
       if (!dto.sector_id || !dto.category_id || !dto.supplier_id || !dto.name || !dto.unit) {
         res.status(400).json({ success: false, error: 'Missing required fields: sector_id, category_id, supplier_id, name, unit' });
@@ -124,30 +128,34 @@ export class ProductController {
 
   static async update(req: Request, res: Response): Promise<void> {
     try {
+      console.log('[UPDATE] Body fields:', Object.keys(req.body));
+      console.log('[UPDATE] File:', !!req.file);
       // Parse body fields from multipart/form-data
       const body = req.body;
       
       const dto: Partial<CreateProductDTO> = {
-        sector_id: body.sector_id,
-        category_id: body.category_id,
-        supplier_id: body.supplier_id,
-        name: body.name,
-        variant: body.variant,
-        description: body.description,
-        unit: body.unit,
-        barcode: body.barcode,
-        quantity_in_stock: body.quantity_in_stock ? parseFloat(body.quantity_in_stock) : undefined,
-        min_stock_alert: body.min_stock_alert ? parseFloat(body.min_stock_alert) : undefined,
-        purchase_price: body.purchase_price ? parseFloat(body.purchase_price) : undefined,
-        selling_price: body.selling_price ? parseFloat(body.selling_price) : undefined,
-        currency: body.currency,
-        origin_country: body.origin_country,
-        origin_region: body.origin_region,
-        batch_number: body.batch_number,
-        expiry_date: body.expiry_date,
-        manufacture_date: body.manufacture_date,
-        notes: body.notes,
+        sector_id: body.sector_id || undefined,
+        category_id: body.category_id || undefined,
+        supplier_id: body.supplier_id || undefined,
+        name: body.name || undefined,
+        variant: body.variant || undefined,
+        description: body.description || undefined,
+        unit: body.unit || undefined,
+        barcode: body.barcode || undefined,
+        quantity_in_stock: body.quantity_in_stock !== undefined ? Number(body.quantity_in_stock) || 0 : undefined,
+        min_stock_alert: body.min_stock_alert !== undefined ? Number(body.min_stock_alert) || 0 : undefined,
+        purchase_price: body.purchase_price !== undefined ? Number(body.purchase_price) || undefined : undefined,
+        selling_price: body.selling_price !== undefined ? Number(body.selling_price) || undefined : undefined,
+        currency: body.currency || undefined,
+        origin_country: body.origin_country || undefined,
+        origin_region: body.origin_region || undefined,
+        batch_number: body.batch_number || undefined,
+        expiry_date: body.expiry_date || undefined,
+        manufacture_date: body.manufacture_date || undefined,
+        notes: body.notes || undefined,
       };
+
+      console.log('[UPDATE] DTO changes:', dto);
 
       const imageBuffer = req.file?.buffer;
       const product = await ProductService.update(req.params.id, dto, imageBuffer);
