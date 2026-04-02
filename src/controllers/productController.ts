@@ -113,10 +113,15 @@ export class ProductController {
 
       console.log('[CREATE] DTO quantity:', dto.quantity_in_stock);
 
-      if (!dto.sector_id || !dto.category_id || !dto.supplier_id || !dto.name || !dto.unit) {
-        res.status(400).json({ success: false, error: 'Missing required fields: sector_id, category_id, supplier_id, name, unit' });
+      if (!dto.sector_id || dto.sector_id === '' || !dto.category_id || dto.category_id === '' || !dto.supplier_id || dto.supplier_id === '' || !dto.name || !dto.unit) {
+        res.status(400).json({ success: false, error: 'Missing required fields: sector_id, category_id, supplier_id, name, unit (UUIDs invalides)' });
         return;
       }
+      if (dto.sector_id.length !== 36 || dto.category_id.length !== 36 || dto.supplier_id.length !== 36) {
+        res.status(400).json({ success: false, error: 'Invalid UUID format for IDs' });
+        return;
+      }
+
 
       const imageBuffer = req.file?.buffer;
       const product = await ProductService.create(dto, imageBuffer);
