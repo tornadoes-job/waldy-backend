@@ -279,7 +279,7 @@ export class ProductService {
         dto.quantity_in_stock ?? 0, dto.min_stock_alert ?? 0,
         dto.purchase_price, dto.selling_price, dto.currency ?? 'XOF',
         imageUrl, imagePublicId, dto.origin_country, dto.origin_region,
-        dto.expiry_date || null, dto.manufacture_date || null, dto.notes
+        dto.batch_number || null, dto.expiry_date || null, dto.manufacture_date || null, dto.notes
       ]
     );
 
