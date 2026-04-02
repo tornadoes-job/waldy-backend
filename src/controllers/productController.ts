@@ -101,12 +101,14 @@ export class ProductController {
         purchase_price: req.body.purchase_price ? Number(req.body.purchase_price) : undefined,
         selling_price: req.body.selling_price ? Number(req.body.selling_price) : undefined,
         currency: req.body.currency || 'XOF',
-        origin_country: req.body.origin_country || '',
-        origin_region: req.body.origin_region || '',
-        batch_number: req.body.batch_number || '',
-        expiry_date: req.body.expiry_date || '',
-        manufacture_date: req.body.manufacture_date || '',
-        notes: req.body.notes || '',
+
+        origin_country: req.body.origin_country || undefined,
+        origin_region: req.body.origin_region || undefined,
+        batch_number: req.body.batch_number || undefined,
+        expiry_date: req.body.expiry_date && req.body.expiry_date !== '' ? req.body.expiry_date : undefined,
+        manufacture_date: req.body.manufacture_date && req.body.manufacture_date !== '' ? req.body.manufacture_date : undefined,
+        notes: req.body.notes || undefined,
+
       };
 
       console.log('[CREATE] DTO quantity:', dto.quantity_in_stock);
@@ -147,12 +149,14 @@ export class ProductController {
         purchase_price: body.purchase_price !== undefined ? Number(body.purchase_price) || undefined : undefined,
         selling_price: body.selling_price !== undefined ? Number(body.selling_price) || undefined : undefined,
         currency: body.currency || undefined,
-        origin_country: body.origin_country || undefined,
-        origin_region: body.origin_region || undefined,
-        batch_number: body.batch_number || undefined,
-        expiry_date: body.expiry_date || undefined,
-        manufacture_date: body.manufacture_date || undefined,
-        notes: body.notes || undefined,
+
+        origin_country: body.origin_country === '' ? undefined : body.origin_country || undefined,
+        origin_region: body.origin_region === '' ? undefined : body.origin_region || undefined,
+        batch_number: body.batch_number === '' ? undefined : body.batch_number || undefined,
+        expiry_date: body.expiry_date && body.expiry_date !== '' ? body.expiry_date : undefined,
+        manufacture_date: body.manufacture_date && body.manufacture_date !== '' ? body.manufacture_date : undefined,
+        notes: body.notes === '' ? undefined : body.notes || undefined,
+
       };
 
       console.log('[UPDATE] DTO changes:', dto);
