@@ -124,14 +124,40 @@ export class ProductController {
 
   static async update(req: Request, res: Response): Promise<void> {
     try {
+      // Parse body fields from multipart/form-data
+      const body = req.body;
+      
+      const dto: Partial<CreateProductDTO> = {
+        sector_id: body.sector_id,
+        category_id: body.category_id,
+        supplier_id: body.supplier_id,
+        name: body.name,
+        variant: body.variant,
+        description: body.description,
+        unit: body.unit,
+        barcode: body.barcode,
+        quantity_in_stock: body.quantity_in_stock ? parseFloat(body.quantity_in_stock) : undefined,
+        min_stock_alert: body.min_stock_alert ? parseFloat(body.min_stock_alert) : undefined,
+        purchase_price: body.purchase_price ? parseFloat(body.purchase_price) : undefined,
+        selling_price: body.selling_price ? parseFloat(body.selling_price) : undefined,
+        currency: body.currency,
+        origin_country: body.origin_country,
+        origin_region: body.origin_region,
+        batch_number: body.batch_number,
+        expiry_date: body.expiry_date,
+        manufacture_date: body.manufacture_date,
+        notes: body.notes,
+      };
+
       const imageBuffer = req.file?.buffer;
-      const product = await ProductService.update(req.params.id, req.body, imageBuffer);
+      const product = await ProductService.update(req.params.id, dto, imageBuffer);
       if (!product) {
         res.status(404).json({ success: false, error: 'Product not found' });
         return;
       }
       res.json({ success: true, data: product, message: 'Product updated successfully' });
     } catch (error) {
+      console.error('Error updating product:', error);
       const msg = error instanceof Error ? error.message : 'Internal server error';
       res.status(500).json({ success: false, error: msg });
     }

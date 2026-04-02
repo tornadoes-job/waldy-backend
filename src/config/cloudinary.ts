@@ -25,6 +25,20 @@ export const upload = multer({
   },
 });
 
+// Optional file upload - won't fail if no file is provided
+export const uploadOptional = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG, PNG, and WebP images are allowed'));
+    }
+  },
+}).single('image');
+
 export const uploadToCloudinary = async (
   buffer: Buffer,
   folder: string,
