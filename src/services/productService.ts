@@ -279,9 +279,10 @@ export class ProductService {
         dto.quantity_in_stock ?? 0, dto.min_stock_alert ?? 0,
         dto.purchase_price, dto.selling_price, dto.currency ?? 'XOF',
         imageUrl, imagePublicId, dto.origin_country, dto.origin_region,
-        dto.batch_number, dto.expiry_date, dto.manufacture_date, dto.notes
+        dto.expiry_date || null, dto.manufacture_date || null, dto.notes
       ]
     );
+
 
     // Record initial stock movement
     if ((dto.quantity_in_stock ?? 0) > 0) {
@@ -345,10 +346,11 @@ export class ProductService {
         dto.name, dto.variant, dto.description, dto.unit, dto.barcode,
         dto.min_stock_alert, dto.purchase_price, dto.selling_price,
         dto.origin_country, dto.origin_region, dto.batch_number,
-        dto.expiry_date, dto.manufacture_date, dto.notes,
+        dto.expiry_date || null, dto.manufacture_date || null, dto.notes,
         dto.supplier_id, imageUrl, imagePublicId, id
       ]
     );
+
 
     return this.findById(id);
   }
